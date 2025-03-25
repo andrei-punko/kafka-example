@@ -7,7 +7,7 @@ Based on [article](https://www.baeldung.com/ops/kafka-docker-setup)
 ## Prerequisites
 
 - Docker
-- [Kafka Tool](https://kafkatool.com/download.html)
+- [Kafka Tool](https://kafkatool.com/download.html) (if want to use custom UI instead of embedded UI)
 
 ## How to start Kafka in single-node configuration
 
@@ -43,28 +43,34 @@ Run from folder where `docker compose up` was used:
 docker compose down
 ```
 
-## Как получить доступ к Kafka UI
+## Default Topics
 
-После запуска контейнеров, Kafka UI будет доступен по адресу:
-- http://localhost:8080
+The following topics are automatically created on startup:
 
-В веб-интерфейсе вы сможете:
-- Просматривать топики
-- Создавать новые топики
-- Просматривать и отправлять сообщения
-- Мониторить состояние кластера
-- Управлять схемами (если настроен Schema Registry)
+### For single-node configuration:
+- users (1 partition, RF=1)
+- orders (1 partition, RF=1)
+- notifications (1 partition, RF=1)
 
-## Топики по умолчанию
+### For cluster configuration:
+- users (2 partitions, RF=2)
+- orders (2 partitions, RF=2)
+- notifications (2 partitions, RF=2)
 
-При запуске автоматически создаются следующие топики:
+## Kafka UI
 
-### Для однонодовой конфигурации:
-- users (1 партиция, RF=1)
-- orders (1 партиция, RF=1)
-- notifications (1 партиция, RF=1)
+Kafka UI is available at http://localhost:8080 after starting the containers.
 
-### Для кластерной конфигурации:
-- users (2 партиции, RF=2)
-- orders (2 партиции, RF=2)
-- notifications (2 партиции, RF=2)
+## GitHub Actions
+
+This project includes GitHub Actions workflow that automatically tests both configurations:
+- Runs on push to master branch
+- Runs on pull requests to master branch
+- Can be triggered manually with choice of configuration to test (all/single-node/cluster)
+
+To run tests manually:
+1. Go to Actions tab
+2. Select "Test Kafka Configurations"
+3. Click "Run workflow"
+4. Choose configuration to test
+5. Click "Run workflow"
