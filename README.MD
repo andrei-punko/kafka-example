@@ -3,7 +3,6 @@
 [![Test Kafka Configurations](https://github.com/andrei-punko/kafka-example/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/andrei-punko/kafka-example/actions/workflows/test.yml)
 
 Based on [article](https://www.baeldung.com/ops/kafka-docker-setup)
-With help of [Cursor AI](https://www.cursor.com/)
 
 ## Prerequisites
 

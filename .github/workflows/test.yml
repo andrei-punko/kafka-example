@@ -32,6 +32,7 @@ jobs:
       
       - name: Check if Kafka is running
         run: |
+          cd single-node
           docker compose ps
           docker compose logs kafka
       
@@ -59,6 +60,7 @@ jobs:
       
       - name: Check if Kafka cluster is running
         run: |
+          cd cluster
           docker compose ps
           docker compose logs kafka1
           docker compose logs kafka2
