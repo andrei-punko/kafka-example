@@ -2,13 +2,25 @@ name: Test Kafka Configurations
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
+  workflow_dispatch:
+    inputs:
+      config:
+        description: 'Which configuration to test'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - single-node
+          - cluster
 
 jobs:
   test-single-node:
     runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && (github.event.inputs.config == 'all' || github.event.inputs.config == 'single-node') || github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v3
       
@@ -35,6 +47,7 @@ jobs:
 
   test-cluster:
     runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && (github.event.inputs.config == 'all' || github.event.inputs.config == 'cluster') || github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v3
       
