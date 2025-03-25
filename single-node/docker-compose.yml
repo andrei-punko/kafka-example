@@ -52,3 +52,15 @@ services:
     image: grafana/grafana
     ports:
       - "3000:3000"
+
+  kafka-init:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - kafka
+    volumes:
+      - ../scripts:/scripts
+    command: >
+      bash -c "
+        export KAFKA_CLUSTER_TYPE=single &&
+        /scripts/create-topics.sh
+      "

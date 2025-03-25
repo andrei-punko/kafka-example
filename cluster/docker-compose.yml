@@ -57,3 +57,16 @@ services:
       - kafka1
       - kafka2
       - zookeeper
+
+  kafka-init:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - kafka1
+      - kafka2
+    volumes:
+      - ../scripts:/scripts
+    command: >
+      bash -c "
+        export KAFKA_CLUSTER_TYPE=cluster &&
+        /scripts/create-topics.sh
+      "
