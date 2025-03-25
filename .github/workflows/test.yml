@@ -1,0 +1,61 @@
+name: Test Kafka Configurations
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-single-node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Start single-node Kafka
+        run: |
+          cd single-node
+          docker compose up -d
+          sleep 30
+      
+      - name: Check if Kafka is running
+        run: |
+          docker compose ps
+          docker compose logs kafka
+      
+      - name: Check if topics are created
+        run: |
+          docker exec kafka kafka-topics --bootstrap-server localhost:9092 --list
+      
+      - name: Cleanup
+        if: always()
+        run: |
+          cd single-node
+          docker compose down
+
+  test-cluster:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Start cluster Kafka
+        run: |
+          cd cluster
+          docker compose up -d
+          sleep 30
+      
+      - name: Check if Kafka cluster is running
+        run: |
+          docker compose ps
+          docker compose logs kafka1
+          docker compose logs kafka2
+      
+      - name: Check if topics are created
+        run: |
+          docker exec kafka1 kafka-topics --bootstrap-server localhost:9092 --list
+      
+      - name: Cleanup
+        if: always()
+        run: |
+          cd cluster
+          docker compose down 
